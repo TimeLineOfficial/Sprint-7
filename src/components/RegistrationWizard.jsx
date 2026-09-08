@@ -9,7 +9,6 @@ import {
   CreditCard, 
   CheckCircle2, 
   ShieldCheck, 
-  Cpu, 
   Terminal
 } from 'lucide-react';
 
@@ -80,49 +79,37 @@ export const RegistrationWizard = () => {
     { num: 4, title: 'Review & Submit', icon: ShieldCheck, key: 'review' }
   ];
 
-  // Intuitive progress calculation:
-  // Step 1 (not filled yet) = 0% completed
-  // Step 2 (Step 1 done) = 25% completed
-  // Step 3 (Step 1 & 2 done) = 50% completed
-  // Step 4 (Step 1, 2 & 3 done) = 75% completed
-  // Final Submission = 100% completed
+  // Dynamic progress calculation based on actual completed steps
   const progressPct = isWizardSubmitted 
     ? 100 
     : Math.round(((currentStep - 1) / 4) * 100);
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      {/* Wizard Header Banner */}
-      <div className="bg-gradient-to-r from-blue-700 via-indigo-800 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl space-y-3">
+      {/* Clean Header Bar with Progress Meter */}
+      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 sm:p-5 shadow-sm space-y-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2 text-amber-400 text-xs font-mono font-bold uppercase tracking-wider">
-            <Cpu className="w-4 h-4" /> Prodesk IT • Sprint 07 Onboarding Wizard
+          <div className="flex items-center space-x-2">
+            <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+              Onboarding Progress
+            </span>
+            <span className="px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-mono font-bold text-[11px]">
+              {progressPct}% COMPLETED
+            </span>
           </div>
+
           <button
             onClick={() => setShowFsmInspector(!showFsmInspector)}
-            className="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white text-[11px] font-mono flex items-center gap-1.5"
+            className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-[11px] font-mono flex items-center gap-1.5 transition-all"
           >
             <Terminal className="w-3.5 h-3.5" />
-            <span>{showFsmInspector ? 'Hide FSM Debug' : 'FSM State Inspector'}</span>
+            <span>{showFsmInspector ? 'Hide Debug' : 'FSM State Inspector'}</span>
           </button>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-          Enterprise Multi-Step Registration Infrastructure
-        </h1>
-        <p className="text-xs sm:text-sm text-blue-100 max-w-2xl leading-relaxed">
-          Architected as a Finite State Machine with 100% controlled components, RegEx password rules, Zod schema boundary validation, and 500ms debounced username API checks.
-        </p>
-
-        {/* Progress Bar Indicator */}
-        <div className="pt-2 space-y-1.5">
-          <div className="flex justify-between text-xs font-mono">
-            <span className="text-blue-200">WIZARD PROGRESS</span>
-            <span className="text-amber-400 font-bold">{progressPct}% COMPLETED</span>
-          </div>
-          <div className="w-full bg-blue-950/80 h-2.5 rounded-full overflow-hidden p-0.5 border border-blue-600/40">
-            <div className="bg-amber-400 h-full rounded-full transition-all duration-500" style={{ width: `${progressPct}%` }} />
-          </div>
+        {/* Clean Modern Progress Bar */}
+        <div className="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+          <div className="bg-blue-600 h-full rounded-full transition-all duration-500" style={{ width: `${progressPct}%` }} />
         </div>
       </div>
 
