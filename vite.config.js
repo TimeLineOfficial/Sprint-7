@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/Sprint-7/', // Explicit GitHub Pages repo base path to ensure zero 404s/blank screens
+  base: './', // Relative asset paths to work seamlessly on any GitHub Pages URL or subpath
   build: {
     outDir: 'dist',
     emptyOutDir: true,
