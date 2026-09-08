@@ -8,8 +8,7 @@ import {
   Moon, 
   CheckCircle2, 
   Cpu, 
-  FileText,
-  Github
+  FileText
 } from 'lucide-react';
 
 const THEME_KEY = 'PRODESK_THEME_SPRINT7';
@@ -71,16 +70,6 @@ export default function App() {
                 {theme === 'dark' ? <Moon className="w-4 h-4 text-amber-300" /> : <Sun className="w-4 h-4 text-amber-500" />}
                 <span className="uppercase text-[10px] hidden sm:inline">{theme}</span>
               </button>
-
-              <a
-                href="https://github.com/TimeLineOfficial/Sprint-7"
-                target="_blank"
-                rel="noreferrer"
-                className="px-3 py-2 rounded-lg bg-slate-900 text-white dark:bg-slate-700 font-semibold flex items-center space-x-1.5 hover:bg-slate-800"
-              >
-                <Github className="w-4 h-4" />
-                <span className="hidden sm:inline">Repository</span>
-              </a>
             </div>
           </div>
         </header>
