@@ -20,7 +20,7 @@ import {
   RotateCcw
 } from 'lucide-react';
 
-export const StepReview = ({ formData, onBack, onReset }) => {
+export const StepReview = ({ formData, onBack, onReset, onSubmitted }) => {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -70,6 +70,7 @@ export const StepReview = ({ formData, onBack, onReset }) => {
     setTimeout(() => {
       setIsSubmitting(false);
       setIsCompleted(true);
+      if (onSubmitted) onSubmitted();
 
       // Trigger Confetti Celebration 🎉
       try {

@@ -10,10 +10,7 @@ import {
   CheckCircle2, 
   ShieldCheck, 
   Cpu, 
-  Terminal, 
-  Sparkles,
-  Sun,
-  Moon
+  Terminal
 } from 'lucide-react';
 
 const INITIAL_FORM_DATA = {
@@ -49,6 +46,7 @@ export const RegistrationWizard = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
   const [showFsmInspector, setShowFsmInspector] = useState(false);
+  const [isWizardSubmitted, setIsWizardSubmitted] = useState(false);
 
   // Update specific step state while preserving all local FSM state
   const updateStepData = (stepKey, field, value) => {
@@ -72,6 +70,7 @@ export const RegistrationWizard = () => {
   const handleResetFsm = () => {
     setFormData(INITIAL_FORM_DATA);
     setCurrentStep(1);
+    setIsWizardSubmitted(false);
   };
 
   const steps = [
@@ -81,7 +80,15 @@ export const RegistrationWizard = () => {
     { num: 4, title: 'Review & Submit', icon: ShieldCheck, key: 'review' }
   ];
 
-  const progressPct = Math.round((currentStep / 4) * 100);
+  // Intuitive progress calculation:
+  // Step 1 (not filled yet) = 0% completed
+  // Step 2 (Step 1 done) = 25% completed
+  // Step 3 (Step 1 & 2 done) = 50% completed
+  // Step 4 (Step 1, 2 & 3 done) = 75% completed
+  // Final Submission = 100% completed
+  const progressPct = isWizardSubmitted 
+    ? 100 
+    : Math.round(((currentStep - 1) / 4) * 100);
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -122,9 +129,8 @@ export const RegistrationWizard = () => {
       {/* Step Indicator Badges Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
         {steps.map((s) => {
-          const IconComp = s.icon;
           const isActive = currentStep === s.num;
-          const isDone = currentStep > s.num;
+          const isDone = currentStep > s.num || isWizardSubmitted;
 
           return (
             <div
@@ -161,10 +167,10 @@ export const RegistrationWizard = () => {
         <div className="bg-slate-950 text-emerald-400 font-mono p-4 rounded-xl text-xs space-y-2 border border-slate-800 shadow-inner">
           <div className="flex items-center justify-between text-slate-400 text-[11px] border-b border-slate-800 pb-1">
             <span className="flex items-center gap-1"><Terminal className="w-3.5 h-3.5" /> LIVE FSM STATE INSPECTOR</span>
-            <span>Current Step: {currentStep} / 4</span>
+            <span>Current Step: {currentStep} / 4 | Progress: {progressPct}%</span>
           </div>
           <pre className="overflow-x-auto text-[11px] max-h-48 custom-scrollbar">
-            {JSON.stringify({ currentStep, formData }, null, 2)}
+            {JSON.stringify({ currentStep, progressPct, formData }, null, 2)}
           </pre>
         </div>
       )}
@@ -202,6 +208,7 @@ export const RegistrationWizard = () => {
             formData={formData}
             onBack={handleBackStep}
             onReset={handleResetFsm}
+            onSubmitted={() => setIsWizardSubmitted(true)}
           />
         )}
       </div>
